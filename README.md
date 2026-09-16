@@ -58,9 +58,10 @@ with `petridish install`.
   marker `# petridish`, **without disturbing any other hook consumer** already configured
   there
 - macOS only: installs the xbar/SwiftBar menu-bar plugin (skip it with
-  `--no-menubar-plugin`). On Linux this step is a no-op — the panel equivalent is the
-  Cinnamon applet, installed separately (see
-  [integrations/cinnamon](integrations/cinnamon/README.md))
+  `--no-menubar-plugin`). On Linux this step is a no-op — the panel equivalent is
+  installed separately, either the Cinnamon applet (see
+  [integrations/cinnamon](integrations/cinnamon/README.md)) or, on Omarchy, the bar
+  widget (see [integrations/omarchy](integrations/omarchy/tkrag.petridish/README.md))
 
 It backs up `~/.claude/settings.json` once, to `~/.petridish/settings.json.backup`, before
 touching it. That backup is a safety artifact for you — uninstall never reads it back

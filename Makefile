@@ -10,7 +10,7 @@
 # returns only the LAST command's exit status, so a formatting failure would
 # report success. Verified empirically — keep them as prerequisites.
 
-.PHONY: help fmt fmt-check clippy test deny msrv raycast cinnamon check check-all clean flake-hunt \
+.PHONY: help fmt fmt-check clippy test deny msrv raycast cinnamon omarchy check check-all clean flake-hunt \
 	lima-install lima-uninstall lima-verify lima-smoke lima-shell
 
 .DEFAULT_GOAL := help
@@ -68,6 +68,13 @@ raycast:        ## Check the Raycast extension (needs node; run `npm ci` there f
 cinnamon:       ## Check the Cinnamon applet's parser (needs node, nothing else).
 	node --test integrations/cinnamon/tests/
 
+# Same rationale as `cinnamon` above — omarchy/tkrag.petridish/parser.js is a
+# duplicate of the Cinnamon applet's parser (a plugin directory has to be
+# self-contained to be copied into ~/.config/omarchy/plugins/), tested the
+# same way.
+omarchy:        ## Check the Omarchy bar widget's parser (needs node, nothing else).
+	node --test integrations/omarchy/tkrag.petridish/tests/
+
 # The everyday gate: everything that needs nothing but a Rust toolchain.
 check: fmt-check clippy test   ## Fast gate: formatting + lints + tests.
 
@@ -76,7 +83,7 @@ check: fmt-check clippy test   ## Fast gate: formatting + lints + tests.
 # toolchain, and node respectively — and a gate that fails on a missing tool
 # trains people to ignore it. Run this before opening a PR; run `check` while
 # iterating.
-check-all: check deny msrv raycast cinnamon   ## Everything CI runs.
+check-all: check deny msrv raycast cinnamon omarchy   ## Everything CI runs.
 
 clean:          ## Remove build output.
 	cargo clean

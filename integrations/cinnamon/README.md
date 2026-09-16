@@ -63,5 +63,7 @@ remove and re-add the applet, or reload it from Looking Glass's Extensions tab.
 
 The applet is Cinnamon-specific, but `petridish menubar` now renders on any
 platform, so a GNOME [Argos](https://github.com/p-e-w/argos) user gets the same
-dropdown for free (Argos speaks the xbar format natively), and a KDE/Waybar/
-polybar user has a stable one-command text source to build on.
+dropdown for free (Argos speaks the xbar format natively), a KDE/Waybar/polybar
+user has a stable one-command text source to build on, and an
+[Omarchy](https://omarchy.org) user has an actual bar widget already built on
+it — see [integrations/omarchy](../omarchy/tkrag.petridish/README.md).
