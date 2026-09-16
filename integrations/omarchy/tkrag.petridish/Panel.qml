@@ -57,7 +57,6 @@ Panel {
 
   function refresh() {
     if (menuProc.running) return
-    menuProc.command = ["bash", "-lc", root.menubarScript()]
     menuProc.running = true
   }
 
@@ -70,6 +69,7 @@ Panel {
 
   Process {
     id: menuProc
+    command: ["bash", "-lc", root.menubarScript()]
     onExited: function(exitCode) {
       if (exitCode === 127) {
         root.barLabel = "🧫 ?"
@@ -87,13 +87,6 @@ Panel {
         root.menuLines = parsed.lines
       }
     }
-  }
-
-  Timer {
-    interval: root.refreshIntervalSec * 1000
-    running: true
-    repeat: true
-    onTriggered: root.refresh()
   }
 
   PopupCard {

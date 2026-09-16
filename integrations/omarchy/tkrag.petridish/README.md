@@ -63,5 +63,17 @@ file — a plugin directory is copied whole into `~/.config/omarchy/plugins/`, s
 reach outside itself for a sibling integration's file. Keep the two in sync by hand.
 
 `BarWidget.qml` is a thin bar-icon shell; `Panel.qml` owns the process/parse/render logic
-and the dropdown. Debugging inside the shell: check `journalctl --user -f` while the
-compositor session runs, or watch for QML console errors on shell reload.
+and the dropdown. The periodic refresh `Timer` lives in `BarWidget.qml`, not `Panel.qml`,
+deliberately: `Panel.qml` is only reachable from `BarWidget.qml` via `Loader.source`, and
+in testing, a `Timer` there stopped firing after any edit to `Panel.qml` following the
+widget's first load in a given shell session — the engine kept the pre-edit compiled
+`Panel.qml` alive under the `Loader` rather than recompiling the changed file. A `Timer`
+in `BarWidget.qml` (the registered entry point, which the shell's plugin rescan does
+reliably recompile) driving `panelLoader.item.refresh()` avoids that path.
+
+Debugging inside the shell: `omarchy-shell shell listPlugins` / `debugBarGeometry` show
+whether a plugin registered and rendered; `journalctl --user -f` surfaces QML warnings
+and errors while the compositor session runs. `omarchy-shell shell rescanPlugins` picks
+up a *new* plugin directory, but if you're iterating on `Panel.qml` specifically and
+changes stop taking effect, that's the cache above — restart the shell process itself
+(find it with `pgrep -x quickshell`; a supervisor respawns it) to get a clean reload.
